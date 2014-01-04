@@ -36,13 +36,15 @@ RUN sed -i "/^innodb_buffer_pool_size*/ s|=.*|= 128M|" /etc/mysql/my.cnf
 RUN sed -i "s/log_slow_verbosity/#log_slow_verbosity/" /etc/mysql/my.cnf
 ADD ./supervisor/mysql.conf /etc/supervisor/conf.d/mysql.conf
 
+# Confluence
+ADD http://www.atlassian.com/software/confluence/downloads/binary/atlassian-confluence-5.4.1-x64.bin /atlassian-confluence-5.4.1-x64.bin
+ADD ./supervisor/confluence.conf /etc/supervisor/conf.d/confluence.conf
+
 ## user
 RUN useradd -d /home/ken -g users -k /etc/skel -m -s /bin/bash ken
 RUN yes password | passwd ken
 RUN echo "ken	ALL=(ALL:ALL) ALL" > /etc/sudoers.d/ken
 RUN chmod 440 /etc/sudoers.d/ken
-
-ADD http://www.atlassian.com/software/confluence/downloads/binary/atlassian-confluence-5.4.1-x64.bin /atlassian-confluence-5.4.1-x64.bin
 
 ADD ./start.sh /
 ADD ./startup /startup
