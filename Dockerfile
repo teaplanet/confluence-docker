@@ -44,4 +44,7 @@ RUN chmod 440 /etc/sudoers.d/ken
 
 ADD http://www.atlassian.com/software/confluence/downloads/binary/atlassian-confluence-5.4.1-x64.bin /atlassian-confluence-5.4.1-x64.bin
 
-CMD ["/usr/bin/supervisord", "-n"]
+ADD ./start.sh /
+ADD ./startup /startup
+
+CMD ["/bin/sh", "/start.sh"]
