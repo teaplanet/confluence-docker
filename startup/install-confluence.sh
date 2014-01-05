@@ -2,7 +2,7 @@
 
 DATADIR=/confluence/data
 
-if [ ! -f $DATADIR ]; then
+if [ ! -d $DATADIR ]; then
 	chmod +x /atlassian-confluence-5.4.1-x64.bin
 	(echo ""; echo ""; echo ""; echo "$DATADIR"; echo ""; echo "n") | /atlassian-confluence-5.4.1-x64.bin
 
