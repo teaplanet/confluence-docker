@@ -6,6 +6,9 @@ RUN locale-gen ja_JP.UTF-8
 RUN update-locale LANG=ja_JP.UTF-8
 ENV LANG ja_JP.UTF-8
 
+RUN echo "Asia/Tokyo" > /etc/timezone    
+RUN dpkg-reconfigure -f noninteractive tzdata
+
 # upstart on Docker
 RUN dpkg-divert --local --rename --add /sbin/initctl
 RUN ln -s /bin/true /sbin/initctl
@@ -40,10 +43,12 @@ RUN update-rc.d mysql disable
 RUN sed -i "/^innodb_buffer_pool_size*/ s|=.*|= 128M|" /etc/mysql/my.cnf
 RUN sed -i "s/log_slow_verbosity/#log_slow_verbosity/" /etc/mysql/my.cnf
 ADD ./supervisor/mysql.conf /etc/supervisor/conf.d/mysql.conf
+ADD ./character_set.cnf /etc/mysql/conf.d/character_set.cnf
 
 # Confluence
 ADD http://www.atlassian.com/software/confluence/downloads/binary/atlassian-confluence-5.4.1-x64.bin /atlassian-confluence-5.4.1-x64.bin
 ADD ./supervisor/confluence.conf /etc/supervisor/conf.d/confluence.conf
+ADD http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.28.tar.gz /
 
 ## user
 RUN useradd -d /home/ken -g users -k /etc/skel -m -s /bin/bash ken
